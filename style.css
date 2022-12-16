@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+* {
+    margin: 0;          /* Default özellikleri sıfırlamak için */
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;         /* Google Fonts */
+}
+
+body {
+    display: flex;                            /* Grid yerine flex ile çalışmak için */
+    justify-content: center;                  /* Saati ekranda ortalamak için */
+    align-items: center;
+    min-height: 100vh;                        /* Görünür ekranın tamamını almak için */
+    background: #2f363e;                   /* Arka plan rengini ayarlamak için */
+}
+
+.container {                                   /* Kapsayıcı sınıfın özellikleri */
+    position: relative;                        /* Container içindeki elementleri isteğimize göre hareket ettirebilmek için */
+    background: #2f363e;                     /* Body arka plan rengi aynı. Gölge yolu ile ön plana çıkaracağız. */
+    min-height: 500px;
+    border-radius: 20px;                        /* Div'in köşelerine ovallik katmak için */
+    border-top-left-radius: 225px;              /* Arka planda sağ ve sol üst köşelerde kalan fazlalıkları yok etmek için */
+    border-top-right-radius: 225px;
+    box-shadow: 25px 25px 75px rgba(0,0,0,0.75),
+    10px 50px 70px rgba(0,0,0,0.25),                     /* Gölge özelliği. Yatay ve dikeyde gölge değerlerini verip blur'luğunu ayarladık. */
+    inset 5px 5px 10px rgba(0,0,0,0.25),                             /* Inset, box-shadow'a kıyasla div'in iç kısmına doğru gölge verir. */
+    inset 5px 5px 20px rgba(255,255,255,0.2),
+    inset -5px -5px 15px rgba(0,0,0,0.75);                        /* Eksi'nin anlamı, gölgeyi ters yöne vermektir. */
+    display: flex;                                          /* Digital saat ile analog saatin konumlarını ayarlamak için. */
+    flex-direction: column;                                 /* column yaparak yan yana değil, yukarıdan aşağıya yani alt alta gelmelerini sağladık. */
+    justify-content: center;                                
+    align-items: center;
+}
+
+.clock {                                         /* Saati stillendirmek için */
+    position: relative;                          /* Üzerine gelecek olan rakamların konumlarını isteğimize göre ayarlayabilmek için */
+    width: 450px;                                /* Saatin genişlik ve yüksekliğini ayarlamak için */
+    height: 450px;
+    background: #2f363e;                                     /* Renk yine aynı. Gölge yolu ile birbirlerinden ayıracağız. */
+    border-radius: 50%;                                        /* Saati yuvarlak yapabilmek için */
+    box-shadow: 10px 50px 70px rgba(0,0,0,0.25),                     /* Gölge özelliği. Yatay ve dikeyde gölge değerlerini verip blur'luğunu ayarladık. */
+    inset 5px 5px 10px rgba(0,0,0,0.25),                             /* Inset, box-shadow'a kıyasla div'in iç kısmına doğru gölge verir. */
+    inset 5px 5px 20px rgba(255,255,255,0.2),
+    inset -5px -5px 15px rgba(0,0,0,0.75);                        /* Eksi'nin anlamı, gölgeyi ters yöne vermektir. */
+    display: flex;                                              /* İçinde bulunacak olan elemanları rahat bir şekilde yerleştirebilmek için. */
+    justify-content: center;                                       /* Saati ekranda ortalamak için */
+    align-items: center;
+    margin-bottom: 30px;                                        /* Analog saat ile digital saat arasındaki mesafeyi açtık. Yapışık durmalarını engelledik. */
+}
+
+.clock::before {                                        /* Pseudo elements */
+    content: '';                                        /* Content'i yok. Boşluk olarak kullandık. */
+    position: absolute;                                 /* Bağlı olduğu kısma göre hareket etmesi için absolute özelliğini kullandık. */
+    width: 8px;                                         /* Akrep ve yelkovanı ortaya bağlayacağımız kadranı oluşturmaya çalıştık. */
+    height: 8px;
+    border-radius: 50%;                                 /* Tam yuvarlak yapmak için kullandık. */
+    background: #2f363e;
+    border: 3px solid #fff;                            /* Beyaz renk ile kadranın görünürlüğünü sağladık. */
+    z-index: 4;                                         /* Z eksenindeki konumunu ayarlamak için. */
+}
+
+.clock span {                                           /* Saatin sayılarını düzenlemek için */
+    position: absolute;                                 /* Sayıların bağlı olduğu kısma göre hareket etmesi için absolute özelliğini kullandık. */
+    inset: 20px;
+    color: #fff;                                      /* Sayıların rengini beyaz yaptık. */
+    text-align: center;                                 /* Sayıları ortalamak için kullandık. */
+    transform: rotate(calc(30deg*var(--i)));            /* Daire 360 derece olduğu ve 12 saatimiz olduğu için 360/12=30 her saatimizi 30 derecelik açı farklarıyla saatimiz üzerinde konumlandırdık. */
+}
+
+.clock span b {                                         /* Sayıların duruşunu düzeltmek için açtık. Mesela 10, 2 gibi sayılar yamuk; 5,6,7 gibi sayılar ters duruyor. */
+    font-size: 2em;                                     /* Sayıların büyüklüğünü tarayıcı default'unun 2 katı, yani 16x2= 32px yaptık. */
+    opacity: 0.25;                                      /* Sayıların çok parlak durmaması için */
+    font-weight: 600;
+    display: inline-block;                              /* Yatayda sayıları düz görebilmek, sayıların yerlerini değiştirebilmek için display özelliğini inline block yaptık. */
+    transform: rotate(calc(-30deg*var(--i)));           /* Sayıların dönmesini engelledik. */
+}
+
+.circle {                                               /* Saat, Dakika, Saniye kadranlarını ayarlamak için. */
+    position: absolute;                                 /* İçeriğe bağımlı şekilde hareket etmeleri için */
+    width: 300px;                                       /* Kadranın uzunluk ve genişliği Daha sonra saat, dakika ve saniye kadranlarını farklı yapacağız. */
+    height: 300px;
+    border: 2px solid rgba(0,0,0,0.25);               /* Kadran kare olarak oluştu. Bunu çember şekline getireceğiz. */
+    border-radius: 50%;                                 /* Kare olan kadranı çember yaptık. */
+    display: flex;                                      /* Kadranı ortalamak için oluşturduk. */
+    justify-content: center;                            /* Elemanları ortalamak için oluşturduk. */
+    align-items: flex-start;                            /* Akrep yelkovanı sıfırdan baslatmak için. */
+}
+
+.circle i {                                             /* Akrep, yelkovan oluşturmak için */
+    position: absolute;                                 
+    width: 6px;
+    height: 50%;
+    background: var(--clr);
+    opacity: 0.75;
+    transform-origin: bottom;
+    transform: scaleY(0.5);                             /* Akrep yelkovanın uzunlugunu ayarlamak için */
+    z-index: 3;                                         /* Akrep yelkovanın z eksenindeki konumunu ayarlamak için. */
+}
+
+.circle:nth-child(1) i {                                /* Saniye çubuğunu ayarlamak için. */
+    width: 2px;                                         /* Saniye çubuğunu inceltmek için. */
+}
+
+.circle:nth-child(2) i {                                /* Yelkovanı ayarlamak için. */
+    width: 6px;                                         /* Yelkovanın kalınlığını ayarlamak için. */
+}
+
+.circle2 {                                              /* Dakika kadranının boyutunu ayarlamak için. */
+    width: 240px;
+    height: 240px;
+    z-index: 2;                                         /* Dakika kadranının z eksenindeki konumunu ayarlamak için */
+}
+
+.circle3 {                                              /* Saat kadranının boyutunu ayarlamak için. */
+    width: 180px;
+    height: 180px;
+    z-index: 1;                                         /* Kadran, akrep, yelkovan, saniye çubuğu üst üste geldi. Kadranın en altta olması için z-index kullandık. */
+}
+
+.circle::before {                                       /* Akrep, Yelkovan, Saniye çubuğunu takip eden ışıkları oluşturmak için. */
+    content: '';
+    position: absolute;                                 /* Işıkların konumunu ayarlamak için. */
+    width: 15px;                                        /* 15-15px'lik kare oluşturduk. Daha sonra bunu 50% vererek yuvarlağa çevireceğiz. */
+    height: 15px;
+    border-radius: 50%;                                 /* Oluşturduğumuz kareyi yuvarlağa çevirdik. */
+    top:-8px;                                           /* Işıkları kadranların üstüne denk getirebilmek için. */
+    background: var(--clr);                             /* Çubuklarla aynı renk olması için var(--clr) kullandık. */
+    box-shadow: 0 0 20px var(--clr),                    /* Işıklara parlaklık katmak için. */
+    0 0 60px var(--clr);
+}
+
+/* DIGITAL CLOCK STYLE */
+
+#time {                                             /* Digital saatin kutusunu oluşturmak için. */
+    margin-bottom: 40px;                            /* Analog saat ile mesafeyi arttırıp digital saate yer açmak için. */
+    display: flex;                                  /* Saat elemanlarını yan yana getireceğimiz için. */
+    padding: 10px 20px;                             /* Alt ve üstten 10px, sağdan ve soldan 20px. */
+    font-size: 2em;                                 /* Digital saat elemanlarının yazı büyüklüğü tarayıcının default özelliğinin 2 katı kadar yani 16x2=32px. */
+    font-weight: 600;                               /* Digital saat elemanlarının yazı kalınlığını ayarlamak için. */
+    border: 2px solid rgba(0,0,0,0.5);            /* Digital saatin yerini ve çerçevesini ayarlamak için. */
+    border-radius: 40px;                            /* Digital saatin köşelerini ovalleştirmek için. */
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.25),     /* Digital saatin görünürlüğünü arttırmak için(kabartmalı gibi dursun diye) gölge ekledik. */
+    inset 5px 5px 20px rgba(255,255,255,0.2),
+    inset -5px -5px 15px rgba(0,0,0,0.75);
+}
+
+#time div {                                         /* Digital saat elemanlarını ayarlamak için. */
+    position: relative;                             /* Elemanların kendi aralarında hareket etmelerini sağlamak için. */
+    width: 60px;                                    /* Digital saat elemanları arasındaki mesafeyi açtık. */
+    text-align: center;                             /* Digital saat elemanlarını ortalamak için. */
+    font-weight: 500;                               /* Digital saat elemanlarının yazı kalınlıklarını ayarlamak için. */
+    color: var(--clr);                              /* Digital saat elemanlarının renklerini ayarlamak için. */
+}
+
+#time div:nth-child(1)::after,                      /* Digital saat elemanları arasına iki nokta üst üste koymak için oluşturduk. Sadece saat ve dakika arasında olacağı için ilk iki elemanı seçtik. Saniyeyi içeren div'i seçmedik */
+#time div:nth-child(2)::after {
+    content: ':';
+    position: absolute;                             /* Noktaları hareket ettirebilmek için. */
+    right: -3px;                                    /* Noktaların konumlarını ayarlamak için. */
+    bottom: 3px;
+}
+
+#time div:last-child {                              /* AM yazısını stillendirmek için. */
+    font-size: 0.75em;                              /* AM yazısının büyüklüğünü tarayıcı boyutunun 0.75 kadarı yani 16x0.75=12px yapmak için. */
+    display: flex;                                  /* Yazının konumunu ayarlamak için. */
+    justify-content: center;
+    align-items: center;
+    color: #fff;                                  /* AM yazısının rengini ayarlamak için. */
+}
+
+#time div:nth-child(2)::after {                            /* Saniyeyi içeren divi seçtik. Saniyenin değiştiğini göstermek için iki noktanın yanıp sönmesini sağlayan animasyon ekleyeceğiz. */
+    animation: animate 1s steps(1) infinite;               /* 1 saniyede bir sürekli yanıp sönmesini sağlamak için. */
+}
+
+@keyframes animate {                                        /* İki noktanın saniyede bir yanıp sönmesini sağlayan denklem. */
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+}
